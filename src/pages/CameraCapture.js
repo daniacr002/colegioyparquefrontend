@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Camera, RefreshCw, Check, Smile } from 'lucide-react';
 import { Button } from '../components/ui/button';
@@ -12,27 +12,18 @@ const CameraCapture = () => {
   const canvasRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    startCamera();
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-      }
-    };
-  }, []);
-
-  const startCamera = async () => {
+  const startCamera = useCallback(async () => {
     try {
       // Request camera with front-facing preference for selfies
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { 
+        video: {
           facingMode: 'user',
           width: { ideal: 1280 },
           height: { ideal: 720 }
         },
         audio: false
       });
-      
+
       setStream(mediaStream);
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
@@ -45,7 +36,17 @@ const CameraCapture = () => {
       console.error('Camera error:', err);
       setError('Unable to access camera. Please check permissions!');
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    startCamera();
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [startCamera, stream]);
 
   const capturePhoto = () => {
     if (videoRef.current && canvasRef.current) {
@@ -53,13 +54,13 @@ const CameraCapture = () => {
       const canvas = canvasRef.current;
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
+
       const ctx = canvas.getContext('2d');
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      
+
       const imageData = canvas.toDataURL('image/jpeg');
       setCapturedImage(imageData);
-      
+
       // Stop camera stream
       if (stream) {
         stream.getTracks().forEach(track => track.stop());
@@ -75,10 +76,10 @@ const CameraCapture = () => {
   const confirmPhoto = () => {
     // Get signup data from sessionStorage
     const signupData = JSON.parse(sessionStorage.getItem('signupData') || '{}');
-    
+
     // Mock age estimation (random between 10-14 for pre-adolescent)
     const estimatedAge = Math.floor(Math.random() * 5) + 10;
-    
+
     // Store complete user data
     const userData = {
       ...signupData,
@@ -92,7 +93,7 @@ const CameraCapture = () => {
       joinedDate: new Date().toISOString(),
       verified: false
     };
-    
+
     sessionStorage.setItem('userData', JSON.stringify(userData));
     navigate('/success');
   };
@@ -151,7 +152,7 @@ const CameraCapture = () => {
                 className="w-full h-full object-cover mirror"
               />
             )}
-            
+
             {/* Camera overlay effects */}
             {!capturedImage && cameraReady && (
               <div className="absolute inset-0 pointer-events-none">
