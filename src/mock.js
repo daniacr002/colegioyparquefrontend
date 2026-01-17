@@ -60,7 +60,7 @@ export const mockTweets = [
     id: '1',
     userId: '1',
     content: 'Hola mis niñas! 🌈 Me alegra que les guste tanto mis videos de la vagina! Denle muchos like para subir mañana! ✨',
-    image: 'https://drive.google.com/file/d/10GHoihMfLjJm3WedMRdzRKhDF1sWKIhn/preview',
+    image: 'https://drive.google.com/file/d/1ZHi1g9PYlvSsZ4CbfwsLKhAPWXLf3Pxv/preview',
     likes: 245,
     retweets: 34,
     comments: 12,
