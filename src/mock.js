@@ -59,8 +59,8 @@ export const mockTweets = [
   {
     id: '1',
     userId: '1',
-    content: 'Hola mis niñas! 🌈 Me alegra que les guste tanto mis videos de la vagina! Denle muchos like para subir mañana! ✨',
-    image: 'https://drive.google.com/file/d/1ZHi1g9PYlvSsZ4CbfwsLKhAPWXLf3Pxv/preview',
+    content: 'Aca mostrandole mis tetas jsjs',
+    image: 'https://drive.google.com/file/d/1Wd5K-qmTBDe4HQeeFQZFyLzY1mYSAefj/preview',
     likes: 245,
     retweets: 34,
     comments: 12,
